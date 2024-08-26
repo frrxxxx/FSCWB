@@ -1,0 +1,23 @@
+close all;
+clear
+X_raw = load("../Datasets/adult.txt");
+label= load("../label/adult_FAC.txt");
+K = 10;
+sigma=1.0;
+n=size(X_raw,1)
+X =normalize(X_raw, 1);
+X = X./repmat(sqrt(sum(X.^2,2)),1, size(X,2));
+W = exp(-squareform(pdist(X))/ (2 * sigma ^2));
+W(logical(eye(size(W))))=0;
+
+sse=calcSSE(X',label)
+
+ncut=calNcut(X,K,W,label)
+
+
+label= load("../label/adult_VFC.txt");
+
+
+sse=calcSSE(X',label)
+
+ncut=calNcut(X,K,W,label)
